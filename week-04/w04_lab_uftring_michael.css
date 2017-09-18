@@ -1,0 +1,14 @@
+.circle {
+  fill: #00ccff;
+  stroke: #0088ff;
+  stroke-width: 5;
+}
+.triangle {
+  fill: #0044ff;
+  stroke: #000000;
+  stroke-width: 5;
+}
+.line {
+  stroke: #00ffff;
+  stroke-width: 5;
+}
