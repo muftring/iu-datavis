@@ -1,0 +1,36 @@
+I found a nice messy chart here:
+
+https://investingcaffeine.com/2017/07/03/hot-dogs-political-fireworks-and-our-nations-birthday/
+
+Actualy there were several, but I chose to look at the "US Households' Balance Sheet" bar chart, which is originally from this blog:
+
+http://scottgrannis.blogspot.com/2017/06/richer-than-ever.html
+
+The bar chart itself:
+
+https://1.bp.blogspot.com/-5vyIT8xOzNg/WTm6ZvKCIpI/AAAAAAAAWzo/5wTFY5dnX3YsLIevDoJ1GoCPr9lTzSMnQCLcB/s1600/Households%2BBalance%2BSheet.jpg
+
+Problems:
+(1) 
+(2) 
+
+Original data source:
+https://www.federalreserve.gov/releases/Z1/Current/default.htm
+
+And the report used is the B.101 Balance Sheet of Households and Nonprofit Organizations (1)
+https://www.federalreserve.gov/releases/z1/current/html/b101.htm
+
+Related Federal Reserve data source:
+https://fred.stlouisfed.org/categories/32258
+
+This site allows selection of the data items, which I needed to reverse engineer from the very summarized legends on the bar chart:
+
++ Net Worth -> Households and nonprofit organizations; net worth
++ Financial Assets -> Households and nonprofit organizations; total financial assets
++ Real Estate -> Households and nonprofit organizations; real estate at market value
++ Debt -> Households and nonprofit organizations; total liabilities
+
+Observations:
+(1) the Federal Reserve site allows you to select the data points you want
+(2) it allows you to generate a graph, which happens to be a much more legible line chart
+(3) it allows you to download the data in CSV format
