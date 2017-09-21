@@ -1,0 +1,5 @@
+A most interesting research report!
+
+I was somewhat surprised that the charts with embellishment scored as well as they did on perceiving values and trends. But was not so surprised that subject and categories were discernable. I did expect that the charts with embellishment would be more memorable (in both the short and long recall group) and enjoyable. Preference was about equally split, which I think makes sense - there are probably an equal share of people who just want the facts (high data-ink ratio) and people who like to see the embellishments (low data-ink ratio).
+
+My opinion on data-ink and chart junk is probably inline with Inbar's conjecture: there is a sweet spot between the two, where the embellishment adds visual appeal, familiarity, and subject identification, but does not add or influence via bias. But I also believe the purpose and where the visualization is used (e.g., in a publication, on a real-time dashboard) will dictate the requirements or acceptance/disapproval of embellishment and chart junk.
