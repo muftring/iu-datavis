@@ -1,0 +1,46 @@
+<html>
+<title>IU - I590 - Data Visualization - Fall, 2017 - Lab 07 - Michael Uftring - Data binding in D3</title>
+<head>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <style>
+  .framed {
+    border: 1px solid black;
+  }
+  .dots {
+    fill: blue;
+    fill-opacity: 0.075;
+  }
+  .axis {
+    font-family: sans-serif;
+    font-size: 12px
+    fill: black
+  }
+  </style>
+</head>
+<body>
+  <div id="item1">
+    <script type="text/javascript">
+    var number = 1000;
+    var values = d3.range(number).map(function(x) {return Math.random();})
+    var width = 500;
+    var height = 175;
+    var plottable = 100
+    var svg = d3.select("body")
+                 .append("svg")
+                 .attr("width", width)
+                 .attr("height", height)
+                 .attr("class", "framed");
+    svg.selectAll("circle").data(values).enter().append("circle")
+                .attr("cy", function(d) {return ((height-plottable)/2)+Math.random()*(plottable)})
+                .attr("r", 5)
+                .attr("cx", function(d) {return d*width;})
+                .attr("class", "dots");
+    svg.append("text")
+                .attr("y", height-5)
+                .attr("x", width/14)
+                .text("random placed points on a 1D scatter plot with jittered Y-axis")
+                .attr("class", "axis")
+    </script>
+  </div>
+</body>
+</html>
