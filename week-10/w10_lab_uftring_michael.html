@@ -1,0 +1,58 @@
+<html>
+<title>IU - I590 - Data Visualization - Fall, 2017 - Lab 08 - Michael Uftring - Data binding in D3</title>
+<head>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <style>
+  .framed {
+    border: 1px solid black;
+  }
+  .labels {
+    fill: blue
+  }
+  .axis {
+    font-family: sans-serif;
+    font-size: 12px
+    fill: black
+  }
+  </style>
+</head>
+<body>
+  <div id="item1">
+    <script type="text/javascript">
+    var w = 1000;
+    var h = 500;
+    var padding = 30;
+    var svg = d3.select("body")
+                 .append("svg")
+                 .attr("width", w)
+                 .attr("height", h)
+                 .attr("class", "framed");
+
+    d3.csv("co2_income.csv", function(data) {
+      var xmax = d3.max(data, function(d) {return +d.income; });
+      var xScale = d3.scale.linear()
+             .domain([0, xmax])
+             .range([padding, w-padding]);
+
+      var ymax = d3.max(data, function(d) {return +d.co2_emission; });
+      var yScale = d3.scale.linear()
+             .domain([0, ymax])
+             .range([h-padding, padding]);
+
+      var rmax = 10;
+      var rScale = d3.scale.linear()
+             .domain([0, ymax])
+             .range([0, rmax]);
+
+      var circles = svg.selectAll("circle")
+       		 	 .data(data)
+          	 .enter().append("circle")
+             .attr('cx', function(d) {return xScale(+d.income);})
+       		 	 .attr('cy', function(d) {return yScale(+d.co2_emission);})
+       		 	 .attr('r',  function(d) {return rScale(+d.co2_emission);});
+    })
+
+    </script>
+  </div>
+</body>
+</html>
