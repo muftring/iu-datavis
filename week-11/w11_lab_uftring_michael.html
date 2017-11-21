@@ -41,7 +41,8 @@
 <body>
   <div id="item1">
     <p>
-      Click on this text to change to log-scale.
+      <button id="start">Start Animation</button>
+      <button id="reset">Reset</button>
     </p>
     <script type="text/javascript">
     var w = 1000;
@@ -85,7 +86,6 @@
              .range([h-padding, padding])
              .nice();
 
-
       var yAxis = d3.svg.axis()
                .scale(yScale)
                .orient("left");
@@ -95,16 +95,32 @@
               .attr("transform", "translate(" + (padding) +",0)")
               .call(yAxis);
 
-      var line = d3.svg.line()
-                        .x(function(d) { return xScale(d.year); })
-                        .y(function(d) { return yScale(d.silver_minted); })
-                        .interpolate("linear");
+      d3.select("#start").on("click", function() {
+        var line = d3.svg.line()
+                          .x(function(d) { return xScale(d.year); })
+                          .y(function(d) { return yScale(d.silver_minted); })
+                          .interpolate("linear");
 
-      var path = svg.append("path")
-                      .attr("class", "line")
-                      .attr("d", line(data))
-                      .attr("stroke", "steelblue")
-                      .attr("fill", "none");
+        var path = svg.append("path")
+                        .attr("class", "line")
+                        .attr("d", line(data))
+                        .attr("stroke", "steelblue")
+                        .attr("fill", "none");
+
+        var totalLength = path.node().getTotalLength();
+
+        path
+          .attr("stroke-dasharray", totalLength + " " + totalLength)
+          .attr("stroke-dashoffset", totalLength)
+          .transition()
+          .duration(5000)
+          .ease("linear")
+          .attr("stroke-dashoffset", 0);
+      });
+
+      d3.select("#reset").on("click", function() {
+        d3.select(".line").remove();
+      });
 
     });
 
