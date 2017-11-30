@@ -80,11 +80,29 @@ def loadCityTownData():
     count = 0
     for line in file.readlines():
         count += 1
-        ignore, code, citytownstate = line.rstrip().split(">", 2)[1].split(" ",2)
-        citytown, state = citytownstate.split(",")
-        code2citytown[code]=citytown
-        citytown2code[citytown]=code
+        #ignore, code, citytownstate = line.rstrip().split(">", 2)[1].split(" ",2)
+        #citytown, state = citytownstate.split(",")
+        #code2citytown[code]=citytown
+        #citytown2code[citytown]=code
         #print("line: {} code: {} citytownstate: {}, citytown: {}, state: {}".format(count, code, citytownstate, citytown, state))
+
+        ignore, code, citytownstate = line.rstrip().split(">", 2)[1].split(" ",2)
+        a, b = citytownstate.split(",")
+        citytown = a.lstrip().rstrip()
+        state = b.lstrip().rstrip()
+
+        try:
+            select = citytown2code[state]
+        except:
+            select = {}
+        newDict = {}
+        for eCity in select:
+            eCode = select[eCity]
+            newDict[eCity] = eCode
+        newDict[citytown] = code
+        citytown2code[state] = newDict
+
+        code2citytown[code]=citytown
 
     file.close()
 
@@ -100,11 +118,11 @@ def searchDictionary(d, city):
             res.append(d[key])
     return res
 
-def findCityTownCode(city):
-    return searchDictionary(citytown2code, city)
+def findCityTownCode(city, state):
+    return searchDictionary(citytown2code[state], city)
 
 def trimCityName(city):
-    return city.replace(" city","").replace(" County/city","").replace(" town","")
+    return city.replace(" city","").replace(" County/city","").replace(" town","").replace(" (consolidated)","")
 
 
 
