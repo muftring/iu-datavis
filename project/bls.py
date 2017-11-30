@@ -40,34 +40,34 @@ def code2month(code):
 
 def month2number(month):
     number = "00"
-    if month == "January": 
+    if month == "January":
         number = "01"
-    elif month == "February": 
+    elif month == "February":
         number = "02"
-    elif month == "March": 
+    elif month == "March":
         number = "03"
-    elif month == "April": 
+    elif month == "April":
         number = "04"
-    elif month == "May": 
+    elif month == "May":
         number = "05"
-    elif month == "June": 
+    elif month == "June":
         number = "06"
-    elif month == "July": 
+    elif month == "July":
         number = "07"
-    elif month == "August": 
+    elif month == "August":
         number = "08"
-    elif month == "September": 
+    elif month == "September":
         number = "09"
-    elif month == "October": 
+    elif month == "October":
         number = "10"
-    elif month == "November": 
+    elif month == "November":
         number = "11"
-    elif month == "December": 
+    elif month == "December":
         number = "12"
     return number
 
 def dateFrom(year, month):
-    return "{}/{}".format(year,month2number[month])
+    return "{}/{}".format(year,month2number(month))
 
 
 
@@ -93,7 +93,7 @@ def decodeCityTown(s):
     return code2citytown[code]
 
 def searchDictionary(d, city):
-    #print("searching for:", city)
+    #print("searching for:", city, "in", d)
     res = []
     for key in d.keys():
         if re.match(city, key):
@@ -148,5 +148,3 @@ def findMeasureCode(s):
 def decodeMeasure(s):
     code = s[len(s)-2:]
     return code2measure[code]
-
-
