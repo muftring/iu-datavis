@@ -37,10 +37,10 @@ function tick(e) {
 
 // a toy network, represented as an edgelist
 var links = [
-  {'source': 'Baratheon', 'target':'Lannister'},
-  {'source': 'Baratheon', 'target':'Stark' },
+  { 'source': 'Baratheon', 'target':'Lannister'},
+  { 'source': 'Baratheon', 'target':'Stark' },
   { 'source': 'Lannister', 'target':'Stark' },
-  { 'source': 'Stark', 'target':'Bolton' },
+  { 'source': 'Stark',     'target':'Bolton' },
 ];
 
 // create empty nodes array
@@ -53,6 +53,9 @@ links.forEach(function(link) {
     link.target = nodes[link.target] ||
         (nodes[link.target] = {name: link.target});
 });
+
+console.log(links);
+console.log(nodes);
 
 var svg=d3.select('body').append('svg')
     .attr('width', width)
