@@ -1,0 +1,35 @@
+application
+-----------
+
+display USA map
+for each city
+  put a circle on the map
+  label the circle with city name
+
+click on a city
+  highlight the city (font size, bold, type color, circle color)
+  show "link" to 4 closest neighbors
+  highlight the 4 closest neighbors
+  highlight the 4 peer cities by population size
+  compute unemployment rate delta (2008 vs. 2017)
+  produce bar chart
+  produce small multiples time-series of unemployment rate
+
+
+data
+----
+
+city data
+- city name
+- latitude
+- longitude
+- population
+- list of 4 closest neighbors
+
+population
+- city
+- population
+
+unemployment rate
+- city
+- set of N years (2008 - 2017), "just July"
