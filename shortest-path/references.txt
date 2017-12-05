@@ -1,0 +1,16 @@
+Dijkstra's algorithm
+--------------------
+https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+http://www.gilles-bertrand.com/2014/03/disjkstra-algorithm-description-shortest-path-pseudo-code-data-structure-example-image.html
+http://www.gilles-bertrand.com/2014/03/dijkstra-algorithm-python-example-source-code-shortest-path.html
+http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
+https://brilliant.org/wiki/dijkstras-short-path-finder/
+http://www.sciencedirect.com/science/article/pii/0020019077900023?via%3Dihub
+
+visualizing shortest path algorithm
+-----------------------------------
+https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html
+https://visualgo.net/en/sssp
+http://graphonline.ru/en/
+https://qiao.github.io/PathFinding.js/visual/
+
