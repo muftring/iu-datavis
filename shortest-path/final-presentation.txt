@@ -1,0 +1,38 @@
+40 slides, 15 seconds each, total = 10 minutes
+----------------------------------------------
+
+1. Title
+
+2. Introduction
+
+3. Objective
+
+4. 
+
+5. 
+
+6. 
+
+7. 
+
+8. 
+
+
+
+
+Motivation
+
+Related Work
+- show existing "sites" / tools
+- explain the good and 'bad'
+
+What do we want to "improve" or show?
+
+My Work
+
+Jupyter Notebook
+
+D3 web app
+
+What's missing?
+
