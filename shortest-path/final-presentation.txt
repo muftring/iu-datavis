@@ -35,4 +35,6 @@ Jupyter Notebook
 D3 web app
 
 What's missing?
+- label the nodes
+- label the edges (with weights)
 
