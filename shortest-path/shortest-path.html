@@ -16,6 +16,14 @@
   stroke: black;
   stroke-width: 1;
 }
+table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+td, th {
+  border: 1px solid black;
+  padding: 1px 4px;
+}
 </style>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
@@ -100,15 +108,11 @@ function unhighlightNode(name) {
 function graphFromNetwork(network) {
   var graph = {};
 
-  console.log("Nodes:");
   network.nodes.forEach(function(node) {
-    console.log(node);
     graph[node.id] = {};
   });
 
-  console.log("Links:");
   network.links.forEach(function(link) {
-    console.log(link);
     graph[link.source.name][link.target.name] = link.value;
   });
 
@@ -272,12 +276,171 @@ function loadFile() {
   loadNetwork(file.name)
 }
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+function getMin(obj) {
+  // reference: https://stackoverflow.com/questions/35527341/getting-all-minimal-values-from-dictionary-javascript
+  var keys   = Object.keys(obj);
+  var lowest = Math.min.apply(null, keys.map(function(x) { return obj[x]} ));
+  var match  = keys.filter(function(y) { return obj[y] === lowest });
+  return match[0];
+}
+
+function dijkstra(graph, src, dst, visited={}, distances={}, predecessors={}) {
+  //""" calculates a shortest path tree rooted at src
+  //"""
+
+  //#print('dijkstra() src:',src,'dst:',dst)
+  console.log('dijkstra() src: ' + src + ' dst: ' + dst)
+
+  if (!(src in graph)) {
+    alert('The root of the shortest path tree cannot be found');
+    return {};
+  }
+  if (!(dst in graph)) {
+    alert('The target of the shortest path cannot be found');
+    return {};
+  }
+
+  //# ending condition
+  if (src == dst) {
+    //# build the shortest path and display it
+    console.log('dijkstra() src == dst (' + src + '==' + dst + ') -> producing result');
+    var path = [];
+    var hops = {};
+    var pred = dst;
+    while (pred != undefined) {
+      console.log('dijkstra() pred(before) = ' + pred);
+      path.push(pred);
+      pred = predecessors[pred];
+      console.log('dijkstra() pred(after) = ' + pred);
+    }
+    path.reverse();
+    cost = distances[dst] || 0;
+    console.log('Shortest path: ' + path);
+    console.log("Cost: " + cost);
+
+    return {'source': path[0], 'destination': path[path.length-1], 'path': path, 'cost': cost};
+  }
+  else {
+    //# if initial run, init the cost
+    if (isEmpty(visited)) {
+      //if debug == 1: print('setting distances[',src,'] = 0')
+      console.log('dijkstra(): visited is empty, setting distances[' + src + '] = 0');
+      distances[src] = 0;
+    }
+
+    //# visit the neighbors
+    for (neighbor in graph[src]) {
+      //if debug == 1: print('visit neighbor:',neighbor)
+      console.log('dijkstra(): visit neighbor: ' + neighbor);
+      if (!(neighbor in visited)) {
+        new_distance = distances[src] + graph[src][neighbor]
+        //if debug == 1: print('distance to',neighbor,'through',src,'(',distances[src],'+',graph[src][neighbor],')','is',new_distance)
+        console.log('dijkstra(): distance to ' + neighbor + ' through ' + src + ' (' + distances[src] + ' + ' + graph[src][neighbor] + ') is ' + new_distance);
+        if (new_distance < (distances[neighbor] || Infinity)) {
+          //if debug == 1: print('setting distances[',neighbor,'] =', new_distance)
+          console.log('dijkstra(): setting distances[' + neighbor + '] = ' + new_distance);
+          distances[neighbor] = new_distance;
+          predecessors[neighbor] = src;
+        }
+      }
+      else {
+        //if debug == 1: print('skip:',neighbor, 'has been visited')
+        console.log('dijkstra(): skip ' + neighbor + 'has been visited');
+      }
+    }
+
+    //# mark as visited
+    //if debug == 1: print('marking',src,'as visited')
+    console.log('dijkstra(): marking ' + src + ' as visited');
+    visited[src] = 1;
+
+    //# now that all neighbors have been visited: recurse
+    //# select the non-visited node with lowest distance 'x'
+    //# run Dijkstra with src='x'
+    console.log('dijkstra(): building unvisited list');
+    var unvisited = {};
+    for (k in graph) {
+      console.log('dijkstra(): checking if ' + k + ' has been visited');
+      if (!(k in visited)) {
+        unvisited[k] = (distances[k] || Infinity)
+        //if debug == 1: print('unvisited[',k,'] =', unvisited[k])
+        console.log('dijkstra(): unvisited[' + k + '] = ' + unvisited[k]);
+      }
+    }
+    x = getMin(unvisited)
+    console.log('dijkstra(): x = ' + x);
+    return dijkstra(graph, x, dst, visited, distances, predecessors)
+  }
+}
+
+function tabulate(data, columns) {
+  // from: http://bl.ocks.org/jfreels/6734025
+
+  var table = d3.select('body').append('table')
+  var thead = table.append('thead')
+  var	tbody = table.append('tbody');
+
+  // append the header row
+  thead.append('tr')
+    .selectAll('th')
+    .data(columns).enter()
+    .append('th')
+      .text(function (column) { return column; });
+
+  // create a row for each object in the data
+  var rows = tbody.selectAll('tr')
+    .data(data)
+    .enter()
+    .append('tr');
+
+  // create a cell in each row for each column
+  var cells = rows.selectAll('td')
+    .data(function (row) {
+      return columns.map(function (column) {
+        return {column: column, value: row[column]};
+      });
+    })
+    .enter()
+    .append('td')
+      .text(function (d) { return d.value; });
+
+  return table;
+}
+
+function buildResultTableData(path) {
+  src = path[0];
+  hops = [];
+  for (i = 1; i < path.length; i++) {
+  	dst = path[i];
+  	cost = graph[src][dst];
+  	hops.push({'source': src, 'destination': dst, 'cost': cost});
+    src = dst;
+  }
+  return hops;
+}
+
 function calculate() {
   if ((startNode == "") || (endNode == "")) {
     alert("you must select starting and ending nodes");
   }
   else {
-    alert("calculate shortest path between " + startNode + " and " + endNode);
+    console.log('calculate() src: ' + startNode + ' dst: ' + endNode);
+    var result = dijkstra(graph, startNode, endNode);
+    console.log(result);
+
+    resultTable = buildResultTableData(result.path);
+
+    var hops = result.path.length - 1;
+    d3.select("body")
+      .append("div")
+      .text('The shortest path from ' + result.source + ' to ' + result.destination + ' has ' + hops + ' hops with total cost ' + result.cost);
+
+    tabulate(resultTable, ['source','destination','cost']);
+
   }
 
 }
