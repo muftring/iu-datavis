@@ -437,7 +437,8 @@ function calculate() {
     var hops = result.path.length - 1;
     d3.select("body")
       .append("div")
-      .text('The shortest path from ' + result.source + ' to ' + result.destination + ' has ' + hops + ' hops with total cost ' + result.cost);
+      .text('The shortest path from ' + result.source + ' to ' + result.destination + ' has ' + hops + ' hops with total cost ' + result.cost)
+      .append("p");
 
     tabulate(resultTable, ['source','destination','cost']);
 
