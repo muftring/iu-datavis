@@ -26,6 +26,7 @@
 var width = 700;
 var height = 500;
 var svg;
+var graph;
 
 var selecting = "start";
 var startNode = "";
@@ -96,6 +97,24 @@ function unhighlightNode(name) {
   findNode(name).style("fill", "black");
 }
 
+function graphFromNetwork(network) {
+  var graph = {};
+
+  console.log("Nodes:");
+  network.nodes.forEach(function(node) {
+    console.log(node);
+    graph[node.id] = {};
+  });
+
+  console.log("Links:");
+  network.links.forEach(function(link) {
+    console.log(link);
+    graph[link.source.name][link.target.name] = link.value;
+  });
+
+  return graph;
+}
+
 function loadNetwork(fileName) {
   svg = d3.select('body')
       .append('svg')
@@ -150,6 +169,8 @@ function loadNetwork(fileName) {
     });
     // note, see this Stackoverflow post about links and nodes must be references to each other
     //   https://stackoverflow.com/questions/38907522/force-directed-graph-error-cannot-read-property-push-of-undefined
+
+    graph = graphFromNetwork(network);
 
     // initiate a force layout
     var force = d3.layout.force()
