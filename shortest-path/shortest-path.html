@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<title>IU - I590 - Data Visualization - Fall, 2017 - Final Project - Michael Uftring</title>
+
+<head>
+<meta charset="utf-8">
+<style>
+.node {
+  stroke: black;
+}
+.node text {
+  font: 10px sans-serif;
+  color: black;
+}
+.link {
+  stroke: black;
+  stroke-width: 1;
+}
+</style>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+
+<script type="text/javascript">
+var width = 700;
+var height = 500;
+var svg;
+
+var selecting = "start";
+var startNode = "";
+var endNode = "";
+
+function startOver() {
+  history.go(0);
+}
+
+function selectStart() {
+  selecting = "start";
+}
+
+function selectEnd() {
+  selecting = "end";
+}
+
+function updateStartNode(node) {
+  startNode = node;
+  d3.select("#startNode").text("Start Node: " + startNode)
+}
+
+function updateEndNode(node) {
+  endNode = node;
+  d3.select("#endNode").text("End Node: " + endNode)
+}
+
+function nodeClicked(node) {
+  if (selecting == "start") {
+    updateStartNode(node.name);
+  }
+  else {
+    updateEndNode(node.name);
+  }
+}
+
+function findNode(name) {
+  return svg.selectAll("circle")
+            .filter(".node")
+            .filter(function(d) {return d.name == name;})
+}
+
+function findLink(source, target) {
+  return svg.selectAll("line")
+            .filter(".link")
+            .filter(function(d) {return (d.source.name == source && d.target.name == target)})
+}
+
+function highlightLink(source, target) {
+  svg.selectAll("line")
+      .filter(".link")
+      .filter(function(d) {return d.source.name == source && d.target.name == target;})
+      .style("stroke", "red");
+}
+
+function unhighlightLink(source, target) {
+  svg.selectAll("line")
+      .filter(".link")
+      .filter(function(d) {return d.source.name == source && d.target.name == target;})
+      .style("stroke", "black");
+}
+
+function highlightNode(name) {
+  findNode(name).style("fill", "red");
+}
+
+function unhighlightNode(name) {
+  findNode(name).style("fill", "black");
+}
+
+function loadNetwork(fileName) {
+  svg = d3.select('body')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+
+  // add the tooltip area to the webpage (below the SVG)
+  var tooltip = d3.select("body").append("div")
+                   .attr("class", "tooltip")
+                   .style("opacity", 0);
+
+  var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+  d3.json(fileName, function(error, network) {
+
+    function tick(e) {
+
+        node.attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; })
+            .call(force.drag);
+            // The .call(force.drag) allows you to drag the nodes around
+
+        link.attr('x1', function(d) { return d.source.x; })
+            .attr('y1', function(d) { return d.source.y; })
+            .attr('x2', function(d) { return d.target.x; })
+            .attr('y2', function(d) { return d.target.y; });
+
+    };
+
+    function colorForNode(node) {
+      return color(vertices[node.name].group);
+    };
+
+    var links = [];
+    var nodes = {};
+    var vertices = {};
+
+    network.links.forEach(function(link) {
+      links.push(link);
+    });
+
+    network.nodes.forEach(function(node) {
+      vertices[node.id] = {name: node.id, group: node.group}
+    });
+
+    // compute nodes from links data
+    links.forEach(function(link) {
+        link.source = nodes[link.source] ||
+            (nodes[link.source] = {name: link.source});
+        link.target = nodes[link.target] ||
+            (nodes[link.target] = {name: link.target});
+    });
+    // note, see this Stackoverflow post about links and nodes must be references to each other
+    //   https://stackoverflow.com/questions/38907522/force-directed-graph-error-cannot-read-property-push-of-undefined
+
+    // initiate a force layout
+    var force = d3.layout.force()
+                  .size([width, height])
+                  .nodes(d3.values(nodes))
+                  .links(links)
+                  .on("tick", tick)
+                  .linkDistance(300)
+                  .start();
+                  // Each "tick" is an iteration; at each tick the nodes are pulled
+                  // towards each other or pushed away from each other to arrive at
+                  // a distance as close to the linkDistance value as possible
+
+    // add links and nodes to the visualization
+    var link = svg.selectAll('.link')
+                  .data(links)
+                  .enter()
+                  .append('line')
+                  .attr('class', 'link')
+                  .attr('cost',function(d) {return d.value;})
+                  .on("mouseover", function(d) {
+                    tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                    tooltip.html("Source: " + d.source.name + " Target: " + d.target.name + " Cost: " + d.value)
+                          .style("left", (d3.event.pageX + 10) + "px")
+                          .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d) {
+                    tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                  })
+                  .on("click", function(d) {
+                    console.log(d);
+                  });
+
+    var node = svg.selectAll('.node')
+                  .data(force.nodes())
+                  .enter().append('circle')
+                  .attr('r', width * 0.01)
+                  .attr('fill', function(n) {return colorForNode(n)})
+                  .attr('class', 'node')
+                  .attr('name', function(d) {return d.name;})
+                  .on("click", function(d) {
+                    nodeClicked(d);
+                  })
+                  .on("mouseover", function(d) {
+                    tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                    tooltip.html("Node: " + d.name)
+                          .style("left", (d3.event.pageX + 10) + "px")
+                          .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d) {
+                    tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                  });
+
+  });
+
+}
+
+function loadFile() {
+  var file = document.querySelector('input[type=file]').files[0];
+  d3.select("#topInput")
+    .text("")
+    .append("button")
+    .text("Start over")
+    .attr("onclick","startOver()")
+  d3.select("body")
+    .append("div")
+    .text("Choose start and end nodes by clicking buttons below and selecting a node in the network.")
+  d3.select("body")
+    .append("div")
+    .text("Then click Compute Shortest Distance to run Dijkstra's algorith to find the shortest path.")
+  d3.select("body")
+    .append("div")
+    .append("button")
+    .attr("onclick","selectStart()")
+    .append("div")
+    .attr("id","startNode")
+    .text("Start Node: ")
+  d3.select("body")
+    .append("div")
+    .append("button")
+    .attr("onclick","selectEnd()")
+    .append("div")
+    .attr("id","endNode")
+    .text("End Node: ")
+  d3.select("body")
+    .append("div")
+    .append("button")
+    .attr("id", "compute")
+    .text("Compute Shortest Distance")
+    .attr("onclick","calculate()")
+  loadNetwork(file.name)
+}
+
+function calculate() {
+  if ((startNode == "") || (endNode == "")) {
+    alert("you must select starting and ending nodes");
+  }
+  else {
+    alert("calculate shortest path between " + startNode + " and " + endNode);
+  }
+
+}
+
+</script>
+
+
+
+</head>
+
+<body>
+<div id="topInput">Select network file: <input type="file" onchange="loadFile()" /></div>
+</body>
+
+</html>
