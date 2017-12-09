@@ -1,0 +1,12 @@
+Shortest Path (D3)
+------------------
+
+- label nodes
+- show weight (cost) on links
+- arrows on links (show direction of link)
+    + http://bl.ocks.org/tomgp/d59de83f771ca2b6f1d4
+    + https://stackoverflow.com/questions/36579339/how-to-draw-line-with-arrow-using-d3-js
+
+Notebooks
+---------
+

@@ -97,8 +97,8 @@ function unhighlightLink(source, target) {
       .style("stroke", "black");
 }
 
-function highlightNode(name) {
-  findNode(name).style("fill", "red");
+function highlightNode(name, color = "red") {
+  findNode(name).style("fill", color);
 }
 
 function unhighlightNode(name) {
@@ -110,7 +110,15 @@ function highlightPath(path) {
   console.log(path);
 
   // start node
-  highlightNode(path[0]);
+  highlightNode(path[0], "lightgreen");
+
+  // intermediate nodes
+  for (i = 1; i < (path.length - 1); i++) {
+    highlightNode(path[i], "yellow");
+  }
+
+  // end node
+  highlightNode(path[path.length - 1], "red");
 
   // the path
   s = path[0];
@@ -120,9 +128,6 @@ function highlightPath(path) {
     highlightLink(t, s);
     s = t;
   }
-
-  // end node
-  highlightNode(path[path.length - 1]);
 }
 
 function graphFromNetwork(network) {
