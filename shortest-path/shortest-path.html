@@ -105,6 +105,26 @@ function unhighlightNode(name) {
   findNode(name).style("fill", "black");
 }
 
+function highlightPath(path) {
+  console.log("highlightPath()");
+  console.log(path);
+
+  // start node
+  highlightNode(path[0]);
+
+  // the path
+  s = path[0];
+  for (i = 1; i < path.length; i++) {
+    t = path[i];
+    highlightLink(s, t);
+    highlightLink(t, s);
+    s = t;
+  }
+
+  // end node
+  highlightNode(path[path.length - 1]);
+}
+
 function graphFromNetwork(network) {
   var graph = {};
 
@@ -252,7 +272,7 @@ function loadFile() {
     .text("Choose start and end nodes by clicking buttons below and selecting a node in the network.")
   d3.select("body")
     .append("div")
-    .text("Then click Compute Shortest Distance to run Dijkstra's algorith to find the shortest path.")
+    .text("Then click Compute Shortest Distance to run Dijkstra's algorithm to find the shortest path.")
   d3.select("body")
     .append("div")
     .append("button")
@@ -411,7 +431,7 @@ function tabulate(data, columns) {
   return table;
 }
 
-function buildResultTableData(path) {
+function summarize(path) {
   src = path[0];
   hops = [];
   for (i = 1; i < path.length; i++) {
@@ -432,15 +452,19 @@ function calculate() {
     var result = dijkstra(graph, startNode, endNode);
     console.log(result);
 
-    resultTable = buildResultTableData(result.path);
+    summary = summarize(result.path);
 
-    var hops = result.path.length - 1;
+    var nbHops = result.path.length - 1;
     d3.select("body")
       .append("div")
-      .text('The shortest path from ' + result.source + ' to ' + result.destination + ' has ' + hops + ' hops with total cost ' + result.cost)
+      .text('The shortest path from ' + result.source +
+            ' to ' + result.destination + ' has ' +
+            nbHops + ' hops with total cost ' + result.cost)
       .append("p");
 
-    tabulate(resultTable, ['source','destination','cost']);
+    tabulate(summary, ['source','destination','cost']);
+
+    highlightPath(result.path);
 
   }
 
