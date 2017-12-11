@@ -7,6 +7,7 @@
 <style>
 .node {
   stroke: black;
+  fill: black;
 }
 .node text {
   font: 10px sans-serif;
@@ -103,6 +104,21 @@ function highlightNode(name, color = "red") {
 
 function unhighlightNode(name) {
   findNode(name).style("fill", "black");
+}
+
+function blinkNodeOn(name, color = "pink") {
+  console.log("blinkNodeOn() name: " + name + " color: " + color);
+  var node = findNode(name);
+  node.transition().delay(500).duration(1000).style("fill", color);
+}
+
+function blinkNodeOff(name) {
+  console.log("blinkNodeOff() name: " + name);
+  unhighlightNode(name);
+}
+
+function blinkLinkOn(source, target, color) {
+
 }
 
 function highlightPath(path) {
@@ -241,7 +257,6 @@ function loadNetwork(fileName) {
                   .data(force.nodes())
                   .enter().append('circle')
                   .attr('r', width * 0.01)
-                  .attr('fill', function(n) {return colorForNode(n)})
                   .attr('class', 'node')
                   .attr('name', function(d) {return d.name;})
                   .on("click", function(d) {
@@ -350,6 +365,8 @@ function dijkstra(graph, src, dst, visited={}, distances={}, predecessors={}) {
     return {'source': path[0], 'destination': path[path.length-1], 'path': path, 'cost': cost};
   }
   else {
+    // TODO: blinkNodeOn(src);
+
     //# if initial run, init the cost
     if (isEmpty(visited)) {
       //if debug == 1: print('setting distances[',src,'] = 0')
@@ -377,6 +394,8 @@ function dijkstra(graph, src, dst, visited={}, distances={}, predecessors={}) {
         console.log('dijkstra(): skip ' + neighbor + 'has been visited');
       }
     }
+
+    // TODO: blinkNodeOff(src);
 
     //# mark as visited
     //if debug == 1: print('marking',src,'as visited')
