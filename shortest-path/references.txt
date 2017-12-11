@@ -13,4 +13,7 @@ https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html
 https://visualgo.net/en/sssp
 http://graphonline.ru/en/
 https://qiao.github.io/PathFinding.js/visual/
+https://www-m9.ma.tum.de/graph-algorithms/spp-dijkstra/index_en.html
 
+
+Lisa Velden, Technischen Universität München

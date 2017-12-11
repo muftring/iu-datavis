@@ -7,7 +7,7 @@
 <style>
 .node {
   stroke: black;
-  fill: black;
+  fill: slateblue;
 }
 .node text {
   font: 10px sans-serif;
@@ -124,6 +124,8 @@ function blinkLinkOn(source, target, color) {
 function highlightPath(path) {
   console.log("highlightPath()");
   console.log(path);
+
+  // TODO: if start and end node are the same, then just use one color
 
   // start node
   highlightNode(path[0], "lightgreen");
