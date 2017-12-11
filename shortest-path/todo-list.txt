@@ -1,6 +1,7 @@
 Shortest Path (D3)
 ------------------
 
+- animate algorithm execution
 - label nodes
 - show weight (cost) on links
 - arrows on links (show direction of link)
