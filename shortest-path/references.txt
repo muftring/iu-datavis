@@ -7,6 +7,13 @@ http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-alg
 https://brilliant.org/wiki/dijkstras-short-path-finder/
 http://www.sciencedirect.com/science/article/pii/0020019077900023?via%3Dihub
 
+https://medium.com/basecs/finding-the-shortest-path-with-a-little-help-from-dijkstra-613149fbdc8e
+https://steemit.com/popularscience/@krishtopa/dijkstra-s-algorithm-of-finding-optimal-paths
+http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap25.htm
+
+https://rosettacode.org/wiki/Dijkstra%27s_algorithm
+
+
 visualizing shortest path algorithm
 -----------------------------------
 https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html
