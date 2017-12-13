@@ -1,4 +1,4 @@
-Dijkstra's algorithm
+﻿Dijkstra's algorithm
 --------------------
 https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 http://www.gilles-bertrand.com/2014/03/disjkstra-algorithm-description-shortest-path-pseudo-code-data-structure-example-image.html
@@ -12,6 +12,10 @@ https://steemit.com/popularscience/@krishtopa/dijkstra-s-algorithm-of-finding-op
 http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap25.htm
 
 https://rosettacode.org/wiki/Dijkstra%27s_algorithm
+
+
+https://indicatrix.org/dijkstras-algorithm-visualization-in-the-browser-c72ad0722589
+http://projects.indicatrix.org/dijkstra.js/
 
 
 visualizing shortest path algorithm
