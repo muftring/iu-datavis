@@ -1,0 +1,19 @@
+Michael Uftring
+Indiana University
+I590 Data Visualization
+Fall, 2017
+-----------------------
+
+Link to mid-term presentation online
+https://youtu.be/cFFqGmZUMFM
+
+Notes:
+I had issues with slides that had audio and video elements.
+In order to present both, I needed to duplicate slides and play just one on each.
+This extended the total time of the video to almost 11 minutes.
+
+The playback speed of the captured videos is eratic; I could not figure out how to resolve this.
+Several online articles indicated there were no controls in PowerPoint to adjust this.
+I am hoping the final material submitted with the report will present the D3 application
+much better.
+
